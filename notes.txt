@@ -1,0 +1,44 @@
+
+
+
+
+
+
+
+"""
+db be like =
+{
+  "planesInAir": {
+            'reg01020':
+            {'type': type,
+             'callsign': callsign,
+             'altitude': altitude,
+             'Lat/Long': ['29.357052', '-100.77845']
+            },
+            'reg9990':
+            {'type': type,
+             'callsign': callsign,
+             'altitude': altitude,
+             'Lat/Long': ['29.357052', '-100.77845']
+            }
+                  }
+  'users': {
+    'user_id(123232)': {
+      'chat_id': 33243432,
+      "trackingPlanes(trigger - <=1000m)": {
+        'reg01020': {
+              'type': type,
+             'callsign': callsign,
+             'altitude': altitude,
+             'Lat/Long': ['29.357052', '-100.77845']
+            }
+                        },
+      "stndPlanes":  {
+        'reg01020': {
+              'type': type,
+             'callsign': callsign,
+             'altitude': altitude,
+             'Lat/Long': ['29.357052', '-100.77845']
+            }
+                        }
+    }
