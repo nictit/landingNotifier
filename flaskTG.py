@@ -1,15 +1,15 @@
 import flask
 import os
-import makeItTrack
+import planesBackEnd
+from re import sub
 
 app = flask.Flask(__name__)
 
 @app.route("/<reg>")
 def index(reg):
-    makeItTrack.regCheck(str(reg))
+    reg = sub(r'[^\w\s]', '', reg)
+    planesBackEnd.addPlaneToTrack(str(reg))
     print(reg)
 
-def mainn():
+def main():
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
-
-# bot.send_document(message.chat.id, open(r'Путь_к_документу/Название_документа.txt, 'rb'))

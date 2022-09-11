@@ -7,7 +7,6 @@ import requests
 from re import sub
 
 
-
 # 2 zone - 2 pages No Europe and Europe
 urlElsewhere = 'https://www.ads-b.nl/index.php?pageno=2002'
 urlEurope = 'https://www.ads-b.nl/index.php?pageno=2001'
@@ -43,7 +42,7 @@ def nowInAir(acSource):
     return acInAir
 
 # get common table with aircraft in air from all zones. output - dict
-def allAcInAir():
+def getInAir():
     print('allAcInAir started')
     InAirElsewhere = nowInAir(getSource(urlElsewhere))
     InAirEurope = nowInAir(getSource(urlEurope))

@@ -1,12 +1,12 @@
 import threading
 import flaskTG
-import makeItTrack
+import planesBackEnd
 
 def telegramAPI():
-    flaskTG.mainn()
+    flaskTG.main()
 
 def altCheckLoop():
-    makeItTrack.altCheckRnW()
+    planesBackEnd.altCheck()
     threading.Timer(20, altCheckLoop).start()
 
 if __name__ == '__main__':
