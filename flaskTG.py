@@ -1,12 +1,12 @@
 import flask
 import os
-import main
+import makeItTrack
 
 app = flask.Flask(__name__)
 
 @app.route("/<reg>")
 def index(reg):
-    main.msgRecieved(str(reg))
+    makeItTrack.regCheck(str(reg))
     print(reg)
 
 def mainn():

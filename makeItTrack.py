@@ -60,9 +60,17 @@ def altCheckRnW():
     altCheck(inAir, trackingPlanes)
     readNwrite.writeTrackingPlanes(trackingPlanes)
 
+# if new msg in telegram - add a/c to trackingPlanes
+def regCheck(reg):
+    inAir = getInAir()
+    trackingPlanes = readNwrite.readTrackingPlanes()
+    if addPlaneToTrack(inAir, reg, trackingPlanes):
+        sendMsg = f"a/c wit reg={reg} is tracking now. It is {inAir[reg]['type']}, callsign - {inAir[reg]['callsign']}"
+        trackingPlanes[reg] = inAir[reg]
+        readNwrite.writeTrackingPlanes(trackingPlanes)
+        return sendMsg
 #addPlaneToTrack(inAir, reg, trackingPlanes)
 #addPlaneToTrack(inAir, '08-6202', trackingPlanes)
 #print(trackingPlanes)
 #altCheck(inAir, trackingPlanes)
 #print(trackingPlanes)
-print(getInAir())
