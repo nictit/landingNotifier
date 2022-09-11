@@ -1,3 +1,5 @@
+#altitude cheker and add plane to tracking aircraft functions
+import readNwrite
 import NowInAir
 
 
@@ -25,9 +27,16 @@ def addPlaneToTrack(inAir, reg, trackingPlanes):
         return False
 
 def landingNotif(planeReg, inAir):
-    print('alert! Plane with reg=', planeReg, 'is landing. Current altitude is', inAir[planeReg]['altitude'], 'feet')
+    msg = f'alert! Plane with reg={planeReg} is landing. Current altitude is {inAir[planeReg]["altitude"]} feet'
+    print(msg)
 
+# Check altitude of tracking a/c
+# if alt < 1000m and 'alt now' < 'alt before' on more then 3m
+#   then notify and delete plane from tracking
+# if a/c is out of range then print it
 # 3280 (ft) = 1000m
+# input - a/c in air and tracking planes
+# output - updated tracking plane dict
 def altCheck(inAir, trackingPlanes):
     print('altCheck started')
     delList = [] # list to write landed planes because u can't change dict size in loop
@@ -44,8 +53,16 @@ def altCheck(inAir, trackingPlanes):
     print('altCheck finished, tracking planes=', trackingPlanes)
     return trackingPlanes
 
+# load tracking planes from file, check alt and write updated dict
+def altCheckRnW():
+    inAir = getInAir()
+    trackingPlanes = readNwrite.readTrackingPlanes()
+    altCheck(inAir, trackingPlanes)
+    readNwrite.writeTrackingPlanes(trackingPlanes)
+
 #addPlaneToTrack(inAir, reg, trackingPlanes)
 #addPlaneToTrack(inAir, '08-6202', trackingPlanes)
 #print(trackingPlanes)
 #altCheck(inAir, trackingPlanes)
 #print(trackingPlanes)
+print(getInAir())
