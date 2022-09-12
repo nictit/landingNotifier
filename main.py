@@ -1,9 +1,9 @@
 import threading
-import flaskTG
+import Flsk
 import planesBackEnd
 
 def telegramAPI():
-    flaskTG.main()
+    Flsk.main()
 
 def altCheckLoop():
     planesBackEnd.altCheck()

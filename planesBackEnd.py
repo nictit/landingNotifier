@@ -1,7 +1,7 @@
 #altitude cheker and add plane to tracking aircraft functions
 import readNwrite
 import planesInAir
-import alerts
+import TGapi
 
 
 # Check altitude of tracking a/c
@@ -19,17 +19,17 @@ def altCheck():
     for planeReg in trackingPlanes.keys():
         if planeReg in inAir.keys():
             if (int(inAir[planeReg]['altitude']) < 3280) and (int(trackingPlanes[planeReg]['altitude']) - int(inAir[planeReg]['altitude']) >= 10) and (int(trackingPlanes[planeReg]['altitude']) >= int(inAir[planeReg]['altitude'])):
-                msg = alerts.landing_msg(planeReg, inAir)
+                msg = TGapi.landing_msg(planeReg, inAir)
                 delList.append(planeReg)
                 print(msg)
-                alerts.send_msg(msg)
+                TGapi.sendMsg(659584153, msg)
             else:
                 trackingPlanes[planeReg] = inAir[planeReg]
         else:
             print(f'a/c wit reg={planeReg} is Out-of-Range now')
-            msg = alerts.outOfRange_msg(planeReg, inAir)
+            msg = TGapi.outOfRange_msg(planeReg, inAir)
             print(msg)
-            #alerts.send_msg(msg)
+            #TGapi.sendMsg(659584153, msg)
     [trackingPlanes.pop(key) for key in delList]
     readNwrite.writeTrackingPlanes(trackingPlanes)
     print('altCheck finished, tracking planes=', trackingPlanes)
@@ -44,25 +44,25 @@ def addPlaneToTrack(reg):
     print(reg)
     if reg in trackingPlanes.keys():
         print('Already tracking')
-        msg = alerts.alreadyTracking_msg(reg, inAir)
+        msg = TGapi.alreadyTracking_msg(reg, inAir)
         print(msg)
-        alerts.send_msg(msg)
+        TGapi.sendMsg(659584153, msg)
         return False
     elif reg in inAir.keys():
         print('Will track this Plane')
         trackingPlanes[reg] = inAir[reg]
         print(trackingPlanes)
-        msg = alerts.willTrack_msg(reg, inAir)
+        msg = TGapi.willTrack_msg(reg, inAir)
         print(msg)
-        alerts.send_msg(msg)
+        TGapi.sendMsg(659584153, msg)
         trackingPlanes[reg] = inAir[reg]
         readNwrite.writeTrackingPlanes(trackingPlanes)
         return True
     else:
         print("can't find a/c in air wit reg =", reg)
-        msg = alerts.notFound_msg(reg, inAir)
+        msg = TGapi.notFound_msg(reg, inAir)
         print(msg)
-        alerts.send_msg(msg)
+        TGapi.sendMsg(659584153, msg)
         return False
 
 
