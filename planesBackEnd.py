@@ -32,7 +32,7 @@ def altCheck():
             #TGapi.sendMsg(659584153, msg)
     [trackingPlanes.pop(key) for key in delList]
     readNwrite.writeTrackingPlanes(trackingPlanes)
-    print('altCheck finished, tracking planes=', trackingPlanes)
+    print('altCheck finished, tracking planes=', trackingPlanes.keys())
 
 #try add plane to track
 # three possible scinarios: 1. a/c already tracking 2. will be tracked 3. a/c not found
@@ -51,7 +51,7 @@ def addPlaneToTrack(reg):
     elif reg in inAir.keys():
         print('Will track this Plane')
         trackingPlanes[reg] = inAir[reg]
-        print(trackingPlanes)
+        print(trackingPlanes.keys())
         msg = TGapi.willTrack_msg(reg, inAir)
         print(msg)
         TGapi.sendMsg(659584153, msg)

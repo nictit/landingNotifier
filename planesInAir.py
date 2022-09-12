@@ -38,7 +38,7 @@ def nowInAir(acSource):
             altitude = 'No data'
         reg = sub(r'[^\w\s]', '', reg) #delete all symbols except letters and digits
         acInAir[reg] = {'type': type, 'callsign': callsign, 'altitude': altitude, 'Lat/Long': latLong}
-    print('nowInAir finished', acInAir)
+    print('nowInAir finished', acInAir.keys())
     return acInAir
 
 # get common table with aircraft in air from all zones. output - dict
@@ -47,5 +47,5 @@ def getInAir():
     InAirElsewhere = nowInAir(getSource(urlElsewhere))
     InAirEurope = nowInAir(getSource(urlEurope))
     inAir = InAirElsewhere | InAirEurope
-    print('===allAcInAir finished', inAir)
+    print('===allAcInAir finished', inAir.keys())
     return inAir
