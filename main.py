@@ -7,7 +7,7 @@ def telegramAPI():
 
 def altCheckLoop():
     planesBackEnd.altCheck()
-    threading.Timer(20, altCheckLoop).start()
+    threading.Timer(60, altCheckLoop).start()
 
 if __name__ == '__main__':
     t1 = threading.Thread(target=telegramAPI).start()
