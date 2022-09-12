@@ -8,6 +8,7 @@ app = flask.Flask(__name__)
 
 @app.route("/", methods=['POST'])
 def index():
+    print('======', flask.request.json)
     chat_id, user_name, msg_text = TGapi.WH_analyse(flask.request.json)
     print(str(chat_id), str(user_name), str(msg_text))
     reg = sub(r'[^\w\s]', '', msg_text)
