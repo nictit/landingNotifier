@@ -21,6 +21,7 @@ def getSource(url):
     return acSource
 
 # get dict of aircraft now in air dict = {'reg': {'type': type, 'callsign': callsign, 'altitude': altitude},...}
+# status can be - 'in air', 'out-of-range'
 def nowInAir(acSource):
     print('nowInAir started')
     acInAir = {}
@@ -37,7 +38,7 @@ def nowInAir(acSource):
         if altitude == '':
             altitude = 'No data'
         reg = sub(r'[^\w\s]', '', reg) #delete all symbols except letters and digits
-        acInAir[reg] = {'type': type, 'callsign': callsign, 'altitude': altitude, 'Lat/Long': latLong}
+        acInAir[reg] = {'type': type, 'callsign': callsign, 'altitude': altitude, 'Lat/Long': latLong, 'status': 'in air', 'chat_id': ''}
     print('nowInAir finished', acInAir.keys())
     return acInAir
 

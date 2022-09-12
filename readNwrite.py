@@ -29,3 +29,9 @@ def writeTrackingPlanes(trackingPlanes):
     else:
         print('trackingPlanes has incorrect format')
         return 'trackingPlanes has incorrect format'
+
+def clearTrackingPlanes():
+    with open('trackingPlanes.json', 'w') as json_file:
+            json.dump({}, json_file)
+            msg = 'all planes were deleted'
+            return msg

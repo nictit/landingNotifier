@@ -18,7 +18,7 @@ def altCheck():
     delList = [] # list to write landed planes because u can't change dict size in loop
     for planeReg in trackingPlanes.keys():
         if planeReg in inAir.keys():
-            if (int(inAir[planeReg]['altitude']) < 3280) and (int(trackingPlanes[planeReg]['altitude']) - int(inAir[planeReg]['altitude']) >= 10) and (int(trackingPlanes[planeReg]['altitude']) >= int(inAir[planeReg]['altitude'])):
+            if (int(inAir[planeReg]['altitude']) < 1000) and (int(trackingPlanes[planeReg]['altitude']) - int(inAir[planeReg]['altitude']) >= 10) and (int(trackingPlanes[planeReg]['altitude']) >= int(inAir[planeReg]['altitude'])):
                 msg = TGapi.landing_msg(planeReg, inAir)
                 delList.append(planeReg)
                 print(msg)
@@ -27,9 +27,9 @@ def altCheck():
                 trackingPlanes[planeReg] = inAir[planeReg]
         else:
             print(f'a/c wit reg={planeReg} is Out-of-Range now')
-            msg = TGapi.outOfRange_msg(planeReg, inAir)
-            print(msg)
-            #TGapi.sendMsg(659584153, msg)
+            trackingPlanes[planeReg]['status'] = 'out-of-range'
+            msg = TGapi.outOfRange_msg(planeReg, trackingPlanes)
+            TGapi.sendMsg(659584153, msg)
     [trackingPlanes.pop(key) for key in delList]
     readNwrite.writeTrackingPlanes(trackingPlanes)
     print('altCheck finished, tracking planes=', trackingPlanes.keys())

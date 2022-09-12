@@ -41,18 +41,19 @@ def sendMsg(chat_id, msg):
 
 
 def landing_msg(planeReg, inAir):
-    msg = f"Aircraft is landing." \
-          f"type - {inAir[planeReg]['type']}" \
-          f"callsign - {inAir[planeReg]['callsign']}" \
-          f"reg - {planeReg}"
+    msg = f"Aircraft is landing.\n" \
+          f"Reg: _{planeReg}_\n" \
+          f"Type: _{inAir[planeReg]['type']}_\n" \
+          f"Callsign: _{inAir[planeReg]['callsign']}_"
+
     print(msg)
     return msg
 
-def outOfRange_msg(planeReg, inAir):
-    msg = f"Aircraft is out-of-range." \
-          f"type - {inAir[planeReg]['type']}" \
-          f"callsign - {inAir[planeReg]['callsign']}" \
-          f"reg - {planeReg}"
+def outOfRange_msg(planeReg, trackingPlanes):
+    msg = f"Aircraft is out-of-range.\n" \
+          f"Reg: _{planeReg}_\n" \
+          f"Type: _{trackingPlanes[planeReg]['type']}_\n" \
+          f"Callsign: _{trackingPlanes[planeReg]['callsign']}_"
     print(msg)
     return msg
 
@@ -61,15 +62,15 @@ def alreadyTracking_msg(planeReg, inAir):
           f"Reg: _{planeReg}_\n" \
           f"Type: _{inAir[planeReg]['type']}_\n" \
           f"Callsign: _{inAir[planeReg]['callsign']}_"
-    
+
     print(msg)
     return msg
 
 def willTrack_msg(planeReg, inAir):
-    msg = f"Aircraft is tracking now." \
-          f"type - {inAir[planeReg]['type']}" \
-          f"callsign - {inAir[planeReg]['callsign']}" \
-          f"reg - {planeReg}"
+    msg = f"Aircraft is tracking now.\n" \
+          f"Reg: _{planeReg}_\n" \
+          f"Type: _{inAir[planeReg]['type']}_\n" \
+          f"Callsign: _{inAir[planeReg]['callsign']}_"
     print(msg)
     return msg
 
@@ -78,3 +79,11 @@ def notFound_msg(planeReg):
     print(msg)
     return msg
 
+def getStatus_msg(trackingPlanes):
+    msg = '_Planes Statuses:_\n\n'
+    if trackingPlanes:
+        for plane in trackingPlanes.keys():
+            msg = msg + trackingPlanes[plane]['type'] + ' (' + trackingPlanes[plane]['callsign'] + ', ' + plane + ') - ' + trackingPlanes[plane]['status'] + '\n'
+    else:
+        msg = msg +'no planes'
+    return msg
