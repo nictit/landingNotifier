@@ -16,6 +16,6 @@ def index():
 def main():
     TGapi.deleteWH()
     print('setting WH')
-    TGapi.setWH('https://fortesty.herokuapp.com')
+    TGapi.setWH('https://whereismyairbot.herokuapp.com')
     print('WH set')
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5050)))
