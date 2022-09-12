@@ -41,27 +41,40 @@ def sendMsg(chat_id, msg):
 
 
 def landing_msg(planeReg, inAir):
-    msg = f'TELEGRAM alert! Plane {inAir[planeReg]["type"]} (c/s - {inAir[planeReg]["callsign"]}, reg - {planeReg}) is landing. Current altitude is {inAir[planeReg]["altitude"]} feet'
+    msg = f"Aircraft is landing." \
+          f"type - {inAir[planeReg]['type']}" \
+          f"callsign - {inAir[planeReg]['callsign']}" \
+          f"reg - {planeReg}"
     print(msg)
     return msg
 
 def outOfRange_msg(planeReg, inAir):
-    msg = f'TELEGRAM alert! Plane {inAir[planeReg]["type"]} (c/s - {inAir[planeReg]["callsign"]}, reg - {planeReg}) is out-of-range.'
+    msg = f"Aircraft is out-of-range." \
+          f"type - {inAir[planeReg]['type']}" \
+          f"callsign - {inAir[planeReg]['callsign']}" \
+          f"reg - {planeReg}"
     print(msg)
     return msg
 
 def alreadyTracking_msg(planeReg, inAir):
-    msg = f'TELEGRAM Plane {inAir[planeReg]["type"]} (c/s - {inAir[planeReg]["callsign"]}, reg - {planeReg}) was already tracking.'
+    msg = f"Aircraft already tracking.\n" \
+          f"Reg: _{planeReg}_\n" \
+          f"Type: _{inAir[planeReg]['type']}_\n" \
+          f"Callsign: _{inAir[planeReg]['callsign']}_"
+    
     print(msg)
     return msg
 
 def willTrack_msg(planeReg, inAir):
-    msg = f"TELEGRAM a/c wit reg={planeReg} is tracking now. It is {inAir[planeReg]['type']}, callsign - {inAir[planeReg]['callsign']}"
+    msg = f"Aircraft is tracking now." \
+          f"type - {inAir[planeReg]['type']}" \
+          f"callsign - {inAir[planeReg]['callsign']}" \
+          f"reg - {planeReg}"
     print(msg)
     return msg
 
 def notFound_msg(planeReg):
-    msg = f'TELEGRAM Plane with reg={planeReg} not found.'
+    msg = f'Plane with reg={planeReg} not found.'
     print(msg)
     return msg
 
