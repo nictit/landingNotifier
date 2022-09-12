@@ -3,6 +3,7 @@ from re import sub
 import flask
 import os
 import TGapi
+
 app = flask.Flask(__name__)
 
 @app.route("/", methods=['POST'])
@@ -12,7 +13,7 @@ def index():
     reg = sub(r'[^\w\s]', '', msg_text)
     planesBackEnd.addPlaneToTrack(str(reg))
 
-if __name__ == '__main__':
+def main():
     TGapi.deleteWH()
     print('setting WH')
     TGapi.setWH('https://fortesty.herokuapp.com')
