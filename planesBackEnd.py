@@ -60,7 +60,7 @@ def addPlaneToTrack(reg):
         return True
     else:
         print("can't find a/c in air wit reg =", reg)
-        msg = TGapi.notFound_msg(reg, inAir)
+        msg = TGapi.notFound_msg(reg)
         print(msg)
         TGapi.sendMsg(659584153, msg)
         return False
