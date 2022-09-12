@@ -35,7 +35,7 @@ def sendMsg(chat_id, msg):
         "chat_id": chat_id,
         "parse_mode": "Markdown"
               }
-    sendMsg_response = requests.post('https://api.telegram.org/bot{}/sendMessage', msgJson)
+    sendMsg_response = requests.post(f'https://api.telegram.org/bot{token}/sendMessage', msgJson)
     return sendMsg_response.json()['ok']
 
 
