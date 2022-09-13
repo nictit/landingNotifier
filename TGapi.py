@@ -45,8 +45,6 @@ def landing_msg(planeReg, inAir):
           f"Reg: _{planeReg}_\n" \
           f"Type: _{inAir[planeReg]['type']}_\n" \
           f"Callsign: _{inAir[planeReg]['callsign']}_"
-
-    print(msg)
     return msg
 
 def outOfRange_msg(planeReg, trackingPlanes):
@@ -54,7 +52,6 @@ def outOfRange_msg(planeReg, trackingPlanes):
           f"Reg: _{planeReg}_\n" \
           f"Type: _{trackingPlanes[planeReg]['type']}_\n" \
           f"Callsign: _{trackingPlanes[planeReg]['callsign']}_"
-    print(msg)
     return msg
 
 #inAir[planeReg]['type']
@@ -63,8 +60,6 @@ def alreadyTracking_msg(planeReg, inAir):
           f"Reg: _{planeReg}_\n" \
           f"Type: _{planeReg}_\n" \
           f"Callsign: _{planeReg}_"
-
-    print(msg)
     return msg
 
 def willTrack_msg(planeReg, inAir):
@@ -72,12 +67,10 @@ def willTrack_msg(planeReg, inAir):
           f"Reg: _{planeReg}_\n" \
           f"Type: _{inAir[planeReg]['type']}_\n" \
           f"Callsign: _{inAir[planeReg]['callsign']}_"
-    print(msg)
     return msg
 
 def notFound_msg(planeReg):
     msg = f'Plane with reg={planeReg} not found.'
-    print(msg)
     return msg
 
 # ch - checker is where need to add 'no planes' string ot not

@@ -13,17 +13,14 @@ urlEurope = 'https://www.ads-b.nl/index.php?pageno=2001'
 
 # get 'dirty' aircraft table
 def getSource(url):
-    print('getSource started')
     page = requests.get(url)
     soup = BeautifulSoup(page.text, 'lxml')
     acSource = soup.find(id='content').find_all(style='background-color: powderblue; border-bottom: 1px solid white;')
-    print('getSource finished')
     return acSource
 
 # get dict of aircraft now in air dict = {'reg': {'type': type, 'callsign': callsign, 'altitude': altitude},...}
 # status can be - 'in air', 'out-of-range'
 def nowInAir(acSource):
-    print('nowInAir started')
     acInAir = {}
     for aircraft in acSource:
         kol2 = aircraft.find_all(class_="col-2 kolom")
@@ -39,14 +36,11 @@ def nowInAir(acSource):
             altitude = 'No data'
         reg = sub(r'[^\w\s]', '', reg) #delete all symbols except letters and digits
         acInAir[reg] = {'type': type, 'callsign': callsign, 'altitude': altitude, 'Lat/Long': latLong, 'status': 'in air', 'chat_id': []}
-    print('nowInAir finished', acInAir.keys())
     return acInAir
 
 # get common table with aircraft in air from all zones. output - dict
 def getInAir():
-    print('allAcInAir started')
     InAirElsewhere = nowInAir(getSource(urlElsewhere))
     InAirEurope = nowInAir(getSource(urlEurope))
     inAir = InAirElsewhere | InAirEurope
-    print('===allAcInAir finished', inAir.keys())
     return inAir

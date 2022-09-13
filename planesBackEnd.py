@@ -12,7 +12,6 @@ import TGapi
 # input - a/c in air and tracking planes
 # output - updated tracking plane dict
 def altCheck():
-    print('altCheck started')
     inAir = planesInAir.getInAir()
     trackingPlanes = readNwrite.readTrackingPlanes()
     delList = [] # list to write landed planes because u can't change dict size in loop
@@ -28,9 +27,9 @@ def altCheck():
                 trackingPlanes[planeReg] = inAir[planeReg]
                 trackingPlanes[planeReg]['chat_id'] = chat_id
         elif trackingPlanes[planeReg]['status'] != 'out-of-range':
-            print(f'a/c wit reg={planeReg} is Out-of-Range now or have no altitude data')
             trackingPlanes[planeReg]['status'] = 'out-of-range'
             msg = TGapi.outOfRange_msg(planeReg, trackingPlanes)
+            print(msg)
             TGapi.sendMsg(trackingPlanes[planeReg]['chat_id'], msg)
     [trackingPlanes.pop(key) for key in delList]
     readNwrite.writeTrackingPlanes(trackingPlanes)
@@ -41,17 +40,12 @@ def altCheck():
 def addPlaneToTrack(reg, chat_id):
     inAir = planesInAir.getInAir()
     trackingPlanes = readNwrite.readTrackingPlanes()
-    print('addPlaneToTrack started')
-    print(inAir.keys())
-    print(reg)
     if reg in trackingPlanes.keys():
-        print('Already tracking')
         msg = TGapi.alreadyTracking_msg(reg, inAir)
         print(msg)
         TGapi.sendMsg(chat_id, msg)
         return False
     elif reg in inAir.keys():
-        print('Will track this Plane')
         trackingPlanes[reg] = inAir[reg]
         trackingPlanes[reg]['chat_id'] = chat_id
         print(trackingPlanes.keys())
@@ -62,7 +56,6 @@ def addPlaneToTrack(reg, chat_id):
         readNwrite.writeTrackingPlanes(trackingPlanes)
         return True
     else:
-        print("can't find a/c in air wit reg =", reg)
         msg = TGapi.notFound_msg(reg)
         print(msg)
         TGapi.sendMsg(chat_id, msg)

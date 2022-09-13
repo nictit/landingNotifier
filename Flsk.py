@@ -9,7 +9,6 @@ app = flask.Flask(__name__)
 
 @app.route("/", methods=['POST'])
 def index():
-    print('======', flask.request.json)
     if 'message' in flask.request.json.keys():
         chat_id, user_name, msg_text = TGapi.WH_analyse(flask.request.json)
         if msg_text == '/start':
@@ -22,6 +21,7 @@ def index():
             TGapi.sendMsg(chat_id, msg)
         elif msg_text.lower()=='status':
             msg = TGapi.getStatus_msg(readNwrite.readTrackingPlanes(), chat_id)
+            print(msg, user_name)
             TGapi.sendMsg(chat_id, msg)
         elif msg_text.lower()=='clear all':
             msg = readNwrite.clearTrackingPlanes()
