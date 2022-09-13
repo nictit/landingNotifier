@@ -10,24 +10,33 @@ app = flask.Flask(__name__)
 @app.route("/", methods=['POST'])
 def index():
     print('======', flask.request.json)
-    chat_id, user_name, msg_text = TGapi.WH_analyse(flask.request.json)
-    if msg_text=='status':
-        msg = TGapi.getStatus_msg(readNwrite.readTrackingPlanes())
-        TGapi.sendMsg(659584153, msg)
-    elif msg_text=='clear all':
-        msg = readNwrite.clearTrackingPlanes()
-        TGapi.sendMsg(659584153, msg)
+    if 'message' in flask.request.json.keys():
+        chat_id, user_name, msg_text = TGapi.WH_analyse(flask.request.json)
+        if msg_text == '/start':
+            msg = f'Привет, {user_name}!\n' \
+                  f'- Чтобы начать следить за самолетом просто напиши мне его бортовой номер.\n' \
+                  f'- Когда его высота будет меньше 300 метров я тебе сообщу.\n' \
+                  f'- Чтобы проверить текущий статус отслеживаемых самолетов напиши "status".\n' \
+                  f'- Чтобы очистить список отслеживаемых самолетов напиши "clear all."'
 
-    else:
-        print(str(chat_id), str(user_name), str(msg_text))
-        reg = sub(r'[^\w\s]', '', msg_text)
-        planesBackEnd.addPlaneToTrack(str(reg))
+            TGapi.sendMsg(chat_id, msg)
+        elif msg_text.lower()=='status':
+            msg = TGapi.getStatus_msg(readNwrite.readTrackingPlanes(), chat_id)
+            TGapi.sendMsg(chat_id, msg)
+        elif msg_text.lower()=='clear all':
+            msg = readNwrite.clearTrackingPlanes()
+            TGapi.sendMsg(chat_id, msg)
+
+        else:
+            print(str(chat_id), str(user_name), str(msg_text))
+            reg = sub(r'[^\w\s]', '', msg_text)
+            planesBackEnd.addPlaneToTrack(str(reg), chat_id)
     return 'its ok'
 
 def main():
     TGapi.deleteWH()
     print('setting WH')
     #TGapi.setWH('https://fortesty.herokuapp.com')
-    print(TGapi.setWH('https://fe7f-87-226-251-234.ngrok.io'))
+    print(TGapi.setWH('https://2ab1-87-226-251-234.ngrok.io'))
     print('WH set')
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))

@@ -57,11 +57,12 @@ def outOfRange_msg(planeReg, trackingPlanes):
     print(msg)
     return msg
 
+#inAir[planeReg]['type']
 def alreadyTracking_msg(planeReg, inAir):
     msg = f"Aircraft already tracking.\n" \
           f"Reg: _{planeReg}_\n" \
-          f"Type: _{inAir[planeReg]['type']}_\n" \
-          f"Callsign: _{inAir[planeReg]['callsign']}_"
+          f"Type: _{planeReg}_\n" \
+          f"Callsign: _{planeReg}_"
 
     print(msg)
     return msg
@@ -79,11 +80,15 @@ def notFound_msg(planeReg):
     print(msg)
     return msg
 
-def getStatus_msg(trackingPlanes):
+# ch - checker is where need to add 'no planes' string ot not
+def getStatus_msg(trackingPlanes, chat_id):
     msg = '_Planes Statuses:_\n\n'
+    ch = True
     if trackingPlanes:
         for plane in trackingPlanes.keys():
-            msg = msg + trackingPlanes[plane]['type'] + ' (' + trackingPlanes[plane]['callsign'] + ', ' + plane + ') - ' + trackingPlanes[plane]['status'] + '\n'
-    else:
+            if trackingPlanes[plane]['chat_id']==chat_id:
+                msg = msg + trackingPlanes[plane]['type'] + ' (' + trackingPlanes[plane]['callsign'] + ', ' + plane + ') - ' + trackingPlanes[plane]['status'] + '\n'
+                ch = False
+    if ch:
         msg = msg +'no planes'
     return msg

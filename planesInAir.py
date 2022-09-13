@@ -38,7 +38,7 @@ def nowInAir(acSource):
         if altitude == '':
             altitude = 'No data'
         reg = sub(r'[^\w\s]', '', reg) #delete all symbols except letters and digits
-        acInAir[reg] = {'type': type, 'callsign': callsign, 'altitude': altitude, 'Lat/Long': latLong, 'status': 'in air', 'chat_id': ''}
+        acInAir[reg] = {'type': type, 'callsign': callsign, 'altitude': altitude, 'Lat/Long': latLong, 'status': 'in air', 'chat_id': []}
     print('nowInAir finished', acInAir.keys())
     return acInAir
 
