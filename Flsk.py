@@ -24,19 +24,17 @@ def index():
             print(msg, user_name)
             TGapi.sendMsg(chat_id, msg)
         elif msg_text.lower()=='clear all':
-            msg = readNwrite.clearTrackingPlanes()
+            msg = readNwrite.clearTrackingPlanes(chat_id)
             TGapi.sendMsg(chat_id, msg)
 
         else:
             print(str(chat_id), str(user_name), str(msg_text))
             reg = sub(r'[^\w\s]', '', msg_text)
-            planesBackEnd.addPlaneToTrack(str(reg), chat_id)
+            planesBackEnd.addPlaneToTrack(str(reg).upper(), chat_id)
     return 'its ok'
 
 def main():
     TGapi.deleteWH()
-    print('setting WH')
-    #TGapi.setWH('https://fortesty.herokuapp.com')
     print(TGapi.setWH('https://whereismyairbot.herokuapp.com'))
     print('WH set')
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))

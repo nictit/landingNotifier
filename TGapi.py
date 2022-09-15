@@ -41,47 +41,54 @@ def sendMsg(chat_id, msg):
 
 
 def landing_msg(planeReg, inAir):
-    msg = f"Aircraft is landing.\n" \
-          f"Reg: _{planeReg}_\n" \
-          f"Type: _{inAir[planeReg]['type']}_\n" \
-          f"Callsign: _{inAir[planeReg]['callsign']}_"
+    msg = f"Самолет заходит на посадку.\n" \
+          f"Тип: _{inAir[planeReg]['type']}_\n" \
+          f"Бортовой: _{planeReg}_\n" \
+          f"Позывной: _{inAir[planeReg]['callsign']}_"
     return msg
 
 def outOfRange_msg(planeReg, trackingPlanes):
-    msg = f"Aircraft is out-of-range.\n" \
-          f"Reg: _{planeReg}_\n" \
-          f"Type: _{trackingPlanes[planeReg]['type']}_\n" \
-          f"Callsign: _{trackingPlanes[planeReg]['callsign']}_"
+    msg = f"Самолет вне зоны доступа.\n" \
+          f"Тип: _{trackingPlanes[planeReg]['type']}_\n" \
+          f"Бортовой: _{planeReg}_\n" \
+          f"Позывной: _{trackingPlanes[planeReg]['callsign']}_"
     return msg
 
-#inAir[planeReg]['type']
 def alreadyTracking_msg(planeReg, inAir):
-    msg = f"Aircraft already tracking.\n" \
-          f"Reg: _{planeReg}_\n" \
-          f"Type: _{planeReg}_\n" \
-          f"Callsign: _{planeReg}_"
+    msg = f"Самолет уже в списке отслеживаемых.\n" \
+          f"Тип: _{inAir[planeReg]['type']}_\n" \
+          f"Бортовой: _{planeReg}_\n" \
+          f"Позывной: _{inAir[planeReg]['callsign']}_"
     return msg
 
 def willTrack_msg(planeReg, inAir):
-    msg = f"Aircraft is tracking now.\n" \
-          f"Reg: _{planeReg}_\n" \
-          f"Type: _{inAir[planeReg]['type']}_\n" \
-          f"Callsign: _{inAir[planeReg]['callsign']}_"
+    msg = f"Самолет добавлен в список отслеживаемых.\n" \
+          f"Тип: _{inAir[planeReg]['type']}_\n" \
+          f"Бортовой: _{planeReg}_\n" \
+          f"Позывной: _{inAir[planeReg]['callsign']}_"
     return msg
 
 def notFound_msg(planeReg):
-    msg = f'Plane with reg={planeReg} not found.'
+    msg = f'Самолет с бортовым {planeReg} не найден.'
     return msg
 
-# ch - checker is where need to add 'no planes' string ot not
 def getStatus_msg(trackingPlanes, chat_id):
-    msg = '_Planes Statuses:_\n\n'
-    ch = True
+    msg = '_Текущий статус:_\n\n'
+    a = []
+    theUserAcDict = theUserAc(trackingPlanes, chat_id)
+    if theUserAcDict:
+        for plane in theUserAcDict:
+            msg = msg + theUserAcDict[plane]['type'] + ' (' + theUserAcDict[plane]['callsign'] + ', ' + plane + ') - ' + theUserAcDict[plane]['status'] + '\n'
+    else:
+        msg = msg + 'самолетов нет'
+    return msg
+
+
+def theUserAc(trackingPlanes: object, chat_id: object) -> object:
+    theUserAcDict = {}
     if trackingPlanes:
         for plane in trackingPlanes.keys():
-            if trackingPlanes[plane]['chat_id']==chat_id:
-                msg = msg + trackingPlanes[plane]['type'] + ' (' + trackingPlanes[plane]['callsign'] + ', ' + plane + ') - ' + trackingPlanes[plane]['status'] + '\n'
-                ch = False
-    if ch:
-        msg = msg +'no planes'
-    return msg
+            for ids in trackingPlanes[plane]['chat_id']:
+                if ids==chat_id:
+                    theUserAcDict[plane] = trackingPlanes[plane]
+    return theUserAcDict

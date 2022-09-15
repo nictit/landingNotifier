@@ -3,6 +3,8 @@ import readNwrite
 import planesInAir
 import TGapi
 
+STND = ['B52', 'E3CF', 'E6', 'R135', 'B703', 'R135', 'U2', 'B742']
+
 
 # Check altitude of tracking a/c
 # if alt < 1000m and 'alt now' < 'alt before' on more then 3m
@@ -11,9 +13,29 @@ import TGapi
 # 3280 (ft) = 1000m
 # input - a/c in air and tracking planes
 # output - updated tracking plane dict
+#!!! сделать из юзер айди в каждом самолете - set
 def altCheck():
     inAir = planesInAir.getInAir()
     trackingPlanes = readNwrite.readTrackingPlanes()
+    allUsersList = allUsers(trackingPlanes)
+    for plane in inAir.keys():
+        if (inAir[plane]['type'] in STND) and (plane in trackingPlanes.keys()) and (trackingPlanes[plane]['chat_id']!=allUsersList):
+            print(inAir[plane]['chat_id'], allUsersList)
+            msg = f'🛩АЛАРМ! {inAir[plane]["type"]} появился на радарах, позывной - {inAir[plane]["callsign"]}, бортовой - {plane}'
+            for ids in list(set(allUsersList)-set(inAir[plane]['chat_id'])):
+                TGapi.sendMsg(ids, msg)
+                trackingPlanes[plane]['chat_id'].append(ids)
+                #list(set(trackingPlanes[plane]['chat_id']))
+                chat_id = trackingPlanes[plane]['chat_id']
+                trackingPlanes[plane] = inAir[plane]
+                trackingPlanes[plane]['chat_id'] = chat_id
+        elif inAir[plane]['type'] in STND and plane not in trackingPlanes.keys():
+            msg = f'🛩АЛАРМ! {inAir[plane]["type"]} появился на радарах, позывной - {inAir[plane]["callsign"]}, бортовой - {plane}'
+            for ids in list(set(allUsersList)):
+                TGapi.sendMsg(ids, msg)
+                trackingPlanes[plane] = inAir[plane]
+                trackingPlanes[plane]['chat_id'].append(ids)
+
     delList = [] # list to write landed planes because u can't change dict size in loop
     for planeReg in trackingPlanes.keys():
         if (planeReg in inAir.keys()) and inAir[planeReg]['altitude'].isdigit() and trackingPlanes[planeReg]['altitude'].isdigit():
@@ -21,7 +43,8 @@ def altCheck():
                 msg = TGapi.landing_msg(planeReg, inAir)
                 delList.append(planeReg)
                 print(msg)
-                TGapi.sendMsg(trackingPlanes[planeReg]['chat_id'], msg)
+                for ids in trackingPlanes[planeReg]['chat_id']:
+                    TGapi.sendMsg(ids, msg)
             else:
                 chat_id = trackingPlanes[planeReg]['chat_id']
                 trackingPlanes[planeReg] = inAir[planeReg]
@@ -30,7 +53,8 @@ def altCheck():
             trackingPlanes[planeReg]['status'] = 'out-of-range'
             msg = TGapi.outOfRange_msg(planeReg, trackingPlanes)
             print(msg)
-            TGapi.sendMsg(trackingPlanes[planeReg]['chat_id'], msg)
+            for ids in trackingPlanes[planeReg]['chat_id']:
+                TGapi.sendMsg(ids, msg)
     [trackingPlanes.pop(key) for key in delList]
     readNwrite.writeTrackingPlanes(trackingPlanes)
     print('altCheck finished, tracking planes=', trackingPlanes.keys())
@@ -40,19 +64,25 @@ def altCheck():
 def addPlaneToTrack(reg, chat_id):
     inAir = planesInAir.getInAir()
     trackingPlanes = readNwrite.readTrackingPlanes()
-    if reg in trackingPlanes.keys():
-        msg = TGapi.alreadyTracking_msg(reg, inAir)
-        print(msg)
-        TGapi.sendMsg(chat_id, msg)
-        return False
+    if (reg in trackingPlanes.keys()):
+        if (chat_id in trackingPlanes[reg]['chat_id']):
+            msg = TGapi.alreadyTracking_msg(reg, inAir)
+            print(msg)
+            TGapi.sendMsg(chat_id, msg)
+            return False
+        else:
+            trackingPlanes[reg]['chat_id'].append(chat_id)
+            msg = TGapi.willTrack_msg(reg, inAir)
+            readNwrite.writeTrackingPlanes(trackingPlanes)
+            TGapi.sendMsg(chat_id, msg)
+
     elif reg in inAir.keys():
         trackingPlanes[reg] = inAir[reg]
-        trackingPlanes[reg]['chat_id'] = chat_id
+        trackingPlanes[reg]['chat_id'].append(chat_id)
         print(trackingPlanes.keys())
         msg = TGapi.willTrack_msg(reg, inAir)
         print(msg)
         TGapi.sendMsg(chat_id, msg)
-        trackingPlanes[reg] = inAir[reg]
         readNwrite.writeTrackingPlanes(trackingPlanes)
         return True
     else:
@@ -61,4 +91,9 @@ def addPlaneToTrack(reg, chat_id):
         TGapi.sendMsg(chat_id, msg)
         return False
 
+def allUsers(trackingPlanes):
+    allUserslList = []
+    for reg in trackingPlanes.keys():
+        allUserslList = list(set(allUserslList+trackingPlanes[reg]['chat_id']))
+    return allUserslList
 

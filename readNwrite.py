@@ -27,8 +27,13 @@ def writeTrackingPlanes(trackingPlanes):
         print('trackingPlanes has incorrect format')
         return 'trackingPlanes has incorrect format'
 
-def clearTrackingPlanes():
-    with open('trackingPlanes.json', 'w') as json_file:
-            json.dump({}, json_file)
-            msg = 'all planes were deleted'
-            return msg
+def clearTrackingPlanes(chat_id):
+    trackingPlanes = readTrackingPlanes()
+    if trackingPlanes:
+        for plane in trackingPlanes.keys():
+            for ids in trackingPlanes[plane]['chat_id']:
+                if ids == chat_id:
+                    trackingPlanes[plane]['chat_id'].remove(ids)
+    writeTrackingPlanes(trackingPlanes)
+    msg = 'all planes were deleted'
+    return msg
