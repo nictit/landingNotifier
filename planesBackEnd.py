@@ -3,7 +3,7 @@ import readNwrite
 import planesInAir
 import TGapi
 
-STND = ['B52', 'E3CF', 'E6', 'R135', 'B703', 'R135', 'U2', 'B742']
+STND = ['B52', 'E3CF', 'E6', 'R135', 'B703', 'R135', 'U2', 'B742', 'E3TF']
 
 
 # Check altitude of tracking a/c
@@ -13,7 +13,6 @@ STND = ['B52', 'E3CF', 'E6', 'R135', 'B703', 'R135', 'U2', 'B742']
 # 3280 (ft) = 1000m
 # input - a/c in air and tracking planes
 # output - updated tracking plane dict
-#!!! сделать из юзер айди в каждом самолете - set
 def altCheck():
     inAir = planesInAir.getInAir()
     trackingPlanes = readNwrite.readTrackingPlanes()
@@ -21,7 +20,7 @@ def altCheck():
     for plane in inAir.keys():
         if (inAir[plane]['type'] in STND) and (plane in trackingPlanes.keys()) and (trackingPlanes[plane]['chat_id']!=allUsersList):
             print(inAir[plane]['chat_id'], allUsersList)
-            msg = f'🛩АЛАРМ! {inAir[plane]["type"]} появился на радарах, позывной - {inAir[plane]["callsign"]}, бортовой - {plane}'
+            msg = f'⚡️ {inAir[plane]["type"]} появился на радарах, позывной - {inAir[plane]["callsign"]}, бортовой - {plane}'
             for ids in list(set(allUsersList)-set(inAir[plane]['chat_id'])):
                 TGapi.sendMsg(ids, msg)
                 trackingPlanes[plane]['chat_id'].append(ids)
@@ -30,7 +29,7 @@ def altCheck():
                 trackingPlanes[plane] = inAir[plane]
                 trackingPlanes[plane]['chat_id'] = chat_id
         elif inAir[plane]['type'] in STND and plane not in trackingPlanes.keys():
-            msg = f'🛩АЛАРМ! {inAir[plane]["type"]} появился на радарах, позывной - {inAir[plane]["callsign"]}, бортовой - {plane}'
+            msg = f'⚡️ {inAir[plane]["type"]} появился на радарах, позывной - {inAir[plane]["callsign"]}, бортовой - {plane}'
             for ids in list(set(allUsersList)):
                 TGapi.sendMsg(ids, msg)
                 trackingPlanes[plane] = inAir[plane]

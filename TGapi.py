@@ -28,7 +28,10 @@ def WH_analyse(WH_triggered):
 
 # send message to user, who triggered webhook
 # return true if all is ok
-# 659584153
+# TODO reg should be copiable
+# TODO planes status should be filtered by type
+# TODO callsigh=link to adsb for inst https://globe.adsbexchange.com/?icao=ae0589
+
 def sendMsg(chat_id, msg):
     msgJson = {
         "text": msg,
@@ -41,28 +44,28 @@ def sendMsg(chat_id, msg):
 
 
 def landing_msg(planeReg, inAir):
-    msg = f"Самолет заходит на посадку.\n" \
+    msg = f"🟢 Самолет заходит на посадку.\n" \
           f"Тип: _{inAir[planeReg]['type']}_\n" \
           f"Бортовой: _{planeReg}_\n" \
           f"Позывной: _{inAir[planeReg]['callsign']}_"
     return msg
 
 def outOfRange_msg(planeReg, trackingPlanes):
-    msg = f"Самолет вне зоны доступа.\n" \
+    msg = f"🔴 Самолет вне зоны доступа.\n" \
           f"Тип: _{trackingPlanes[planeReg]['type']}_\n" \
           f"Бортовой: _{planeReg}_\n" \
           f"Позывной: _{trackingPlanes[planeReg]['callsign']}_"
     return msg
 
 def alreadyTracking_msg(planeReg, inAir):
-    msg = f"Самолет уже в списке отслеживаемых.\n" \
+    msg = f"🟡 Самолет уже в списке отслеживаемых.\n" \
           f"Тип: _{inAir[planeReg]['type']}_\n" \
           f"Бортовой: _{planeReg}_\n" \
           f"Позывной: _{inAir[planeReg]['callsign']}_"
     return msg
 
 def willTrack_msg(planeReg, inAir):
-    msg = f"Самолет добавлен в список отслеживаемых.\n" \
+    msg = f"✅ Самолет добавлен в список отслеживаемых.\n" \
           f"Тип: _{inAir[planeReg]['type']}_\n" \
           f"Бортовой: _{planeReg}_\n" \
           f"Позывной: _{inAir[planeReg]['callsign']}_"
