@@ -2,6 +2,8 @@
 import readNwrite
 import planesInAir
 import TGapi
+import requests
+import json
 
 STND = ['B52', 'E3CF', 'E6', 'R135', 'B703', 'R135', 'U2', 'B742', 'E3TF', 'B752']
 
@@ -94,4 +96,13 @@ def allUsers(trackingPlanes):
     for reg in trackingPlanes.keys():
         allUserslList = list(set(allUserslList+trackingPlanes[reg]['chat_id']))
     return allUserslList
+"""
+def getRegion(coord):
+    a = requests.get(f'http://api.positionstack.com/v1/reverse?access_key=8a5f09a51acbcff9fb3b5fbd1c20bca4&query={coord[0]},{coord[1]}&language=eng')
+    return a.text
 
+coord = ["49.656", "13.269"]
+jsoan = json.loads(getRegion(coord))
+print(jsoan)
+print(jsoan['data'][0]['region'], jsoan['data'][0]['country_code'])
+"""

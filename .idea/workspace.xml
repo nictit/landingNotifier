@@ -27,7 +27,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="TODO_SCOPE" value="All Places" />
   </component>
-  <component name="RunManager" selected="Python.main">
+  <component name="RunManager" selected="Python.planesBackEnd">
     <configuration name="TGapi" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="landingNotifier" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -93,8 +93,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.main" />
         <item itemvalue="Python.planesBackEnd" />
+        <item itemvalue="Python.main" />
         <item itemvalue="Python.TGapi" />
       </list>
     </recent_temporary>

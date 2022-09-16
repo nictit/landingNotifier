@@ -54,7 +54,8 @@ def outOfRange_msg(planeReg, trackingPlanes):
     msg = f"🔴 Самолет вне зоны доступа.\n" \
           f"Тип: _{trackingPlanes[planeReg]['type']}_\n" \
           f"Бортовой: _{planeReg}_\n" \
-          f"Позывной: _{trackingPlanes[planeReg]['callsign']}_"
+          f"Позывной: _{trackingPlanes[planeReg]['callsign']}_\n" \
+          f"Высота: _{trackingPlanes[planeReg]['altitude']}_"
     return msg
 
 def alreadyTracking_msg(planeReg, inAir):
