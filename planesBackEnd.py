@@ -3,7 +3,7 @@ import readNwrite
 import planesInAir
 import TGapi
 
-STND = ['B52', 'E3CF', 'E6', 'R135', 'B703', 'R135', 'U2', 'B742', 'E3TF', 'B752']
+STND = ['B52', 'E3CF', 'E6', 'R135', 'B703', 'R135', 'U2', 'B742', 'E3TF', 'B752', 'B703']
 
 
 # Check altitude of tracking a/c

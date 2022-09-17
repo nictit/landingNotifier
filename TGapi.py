@@ -49,7 +49,7 @@ def sendTo(msg, userList):
     for user in userList:
         msgJson['chat_id'] = user
         print(msgJson)
-        sendMsg_response = requests.post(TGapi.url + 'sendMessage', msgJson)
+        sendMsg_response = requests.post(url + 'sendMessage', msgJson)
     return 'ok'
 
 def allUsers(trackingPlanes):
@@ -62,33 +62,33 @@ def stnd_msg(plane, inAir):
     msg = f'⚡️ {inAir[plane]["type"]} появился на радарах, бортовой - {plane}, позывной - {inAir[plane]["callsign"]}.'
     return msg
 
-def landing_msg(planeReg, inAir):
+def landing_msg(plane, inAir):
     msg = f"🟢 Самолет заходит на посадку.\n" \
-          f"Тип: _{inAir[planeReg]['type']}_\n" \
-          f"Бортовой: _{planeReg}_\n" \
-          f"Позывной: _{inAir[planeReg]['callsign']}_"
+          f"Тип: _{inAir[plane]['type']}_\n" \
+          f"Бортовой: _{plane}_\n" \
+          f"Позывной: _{inAir[plane]['callsign']}_"
     return msg
 
-def outOfRange_msg(planeReg, trackingPlanes):
+def outOfRange_msg(plane, trackingPlanes):
     msg = f"🔴 Самолет вне зоны доступа.\n" \
-          f"Тип: _{trackingPlanes[planeReg]['type']}_\n" \
-          f"Бортовой: _{planeReg}_\n" \
-          f"Позывной: _{trackingPlanes[planeReg]['callsign']}_\n" \
-          f"Высота: _{trackingPlanes[planeReg]['altitude']/0.3} м._"
+          f"Тип: _{trackingPlanes[plane]['type']}_\n" \
+          f"Бортовой: _{plane}_\n" \
+          f"Позывной: _{trackingPlanes[plane]['callsign']}_\n" \
+          f"Высота: _{trackingPlanes[plane]['altitude']}._"
     return msg
 
-def alreadyTracking_msg(planeReg, inAir):
+def alreadyTracking_msg(plane, inAir):
     msg = f"🟡 Самолет уже в списке отслеживаемых.\n" \
-          f"Тип: _{inAir[planeReg]['type']}_\n" \
-          f"Бортовой: _{planeReg}_\n" \
-          f"Позывной: _{inAir[planeReg]['callsign']}_"
+          f"Тип: _{inAir[plane]['type']}_\n" \
+          f"Бортовой: _{plane}_\n" \
+          f"Позывной: _{inAir[plane]['callsign']}_"
     return msg
 
-def willTrack_msg(planeReg, inAir):
+def willTrack_msg(plane, inAir):
     msg = f"✅ Самолет добавлен в список отслеживаемых.\n" \
-          f"Тип: _{inAir[planeReg]['type']}_\n" \
-          f"Бортовой: _{planeReg}_\n" \
-          f"Позывной: _{inAir[planeReg]['callsign']}_"
+          f"Тип: _{inAir[plane]['type']}_\n" \
+          f"Бортовой: _{plane}_\n" \
+          f"Позывной: _{inAir[plane]['callsign']}_"
     return msg
 
 def notFound_msg(planeReg):
