@@ -99,6 +99,7 @@ def getStatus_msg(trackingPlanes, chat_id):
     msg = '_Текущий статус:_\n\n'
     a = []
     theUserAcDict = theUserAc(trackingPlanes, chat_id)
+    theUserAcDict = dict(sorted(theUserAcDict.items(), key=lambda item: item[1]))
     if theUserAcDict:
         for plane in theUserAcDict:
             msg = msg + theUserAcDict[plane]['type'] + ' (' + theUserAcDict[plane]['callsign'] + ', ' + plane + ') - ' + theUserAcDict[plane]['status'] + '\n'
