@@ -35,7 +35,7 @@ def index():
 
 def main():
     TGapi.deleteWH()
-    print(TGapi.setWH('https://whereismyairbot.herokuapp.com'))
-    #print(TGapi.setWH('https://d1e2-87-226-251-234.ngrok.io'))
+    #print(TGapi.setWH('https://whereismyairbot.herokuapp.com'))
+    print(TGapi.setWH('https://f3a5-87-226-251-234.ngrok.io'))
     print('WH set')
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))

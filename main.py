@@ -6,7 +6,7 @@ def telegramAPI():
     Flsk.main()
 
 def altCheckLoop():
-    planesBackEnd.altCheck()
+    planesBackEnd.checkPlanes()
     threading.Timer(60, altCheckLoop).start()
 
 if __name__ == '__main__':

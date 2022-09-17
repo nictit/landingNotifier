@@ -41,7 +41,26 @@ def sendMsg(chat_id, msg):
     sendMsg_response = requests.post(url + 'sendMessage', msgJson)
     return sendMsg_response.json()['ok']
 
+def sendTo(msg, userList):
+    msgJson = {
+        "text": msg,
+        "chat_id": '',
+        "parse_mode": "Markdown"}
+    for user in userList:
+        msgJson['chat_id'] = user
+        print(msgJson)
+        sendMsg_response = requests.post(TGapi.url + 'sendMessage', msgJson)
+    return 'ok'
 
+def allUsers(trackingPlanes):
+    allUserslList = []
+    for reg in trackingPlanes.keys():
+        allUserslList = list(set(allUserslList+trackingPlanes[reg]['chat_id']))
+    return allUserslList
+
+def stnd_msg(plane, inAir):
+    msg = f'⚡️ {inAir[plane]["type"]} появился на радарах, бортовой - {plane}, позывной - {inAir[plane]["callsign"]}.'
+    return msg
 
 def landing_msg(planeReg, inAir):
     msg = f"🟢 Самолет заходит на посадку.\n" \
@@ -55,7 +74,7 @@ def outOfRange_msg(planeReg, trackingPlanes):
           f"Тип: _{trackingPlanes[planeReg]['type']}_\n" \
           f"Бортовой: _{planeReg}_\n" \
           f"Позывной: _{trackingPlanes[planeReg]['callsign']}_\n" \
-          f"Высота: _{trackingPlanes[planeReg]['altitude']}_"
+          f"Высота: _{trackingPlanes[planeReg]['altitude']/0.3} м._"
     return msg
 
 def alreadyTracking_msg(planeReg, inAir):
