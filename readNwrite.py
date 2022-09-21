@@ -37,3 +37,18 @@ def clearTrackingPlanes(chat_id):
     writeTrackingPlanes(trackingPlanes)
     msg = 'all planes were deleted'
     return msg
+
+def clearTrackingPlane(chat_id, plane):
+    trackingPlanes = readTrackingPlanes()
+    if trackingPlanes:
+        for ids in trackingPlanes[plane]['chat_id']:
+            if ids == chat_id:
+                trackingPlanes[plane]['chat_id'].remove(ids)
+    writeTrackingPlanes(trackingPlanes)
+    msg = plane + '  was deleted'
+    return msg
+
+def clearAll():
+    writeTrackingPlanes('{}')
+    msg = 'ALL were deleted'
+    return 'ok'

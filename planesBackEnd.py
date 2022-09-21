@@ -42,7 +42,7 @@ def infoUpdate(inAir, trackingPlanes):
         if plane in inAir.keys(): #if tracking plane in air
             if inAir[plane]['altitude'].isdigit() and trackingPlanes[plane]['altitude'].isdigit(): # if altitude info is correct
                 if (int(inAir[plane]['altitude']) < 700) and (int(trackingPlanes[plane]['altitude']) - int(inAir[plane]['altitude']) >= 10):
-                    msg = TGapi.landing_msg(plane, inAir)
+                    msg = TGapi.landing_msg(str(plane), inAir)
                     usersList = trackingPlanes[plane]['chat_id']
                     TGapi.sendTo(msg, usersList)
                     delList.append(plane)
@@ -57,9 +57,10 @@ def infoUpdate(inAir, trackingPlanes):
                 trackingPlanes[plane]['chat_id'] = chat_id
         elif trackingPlanes[plane]['status'] != 'out-of-range': # if plane disappeared and status != OoR
             trackingPlanes[plane]['status'] = 'out-of-range'
-            msg = TGapi.outOfRange_msg(plane, trackingPlanes)
+            msg = TGapi.outOfRange_msg(str(plane), trackingPlanes)
             usersList = trackingPlanes[plane]['chat_id']
-            TGapi.sendTo(msg, usersList)
+            #TGapi.sendTo(msg, usersList)
+            TGapi.sendToOoR(msg, usersList, plane)
 
     [trackingPlanes.pop(key) for key in delList]
     readNwrite.writeTrackingPlanes(trackingPlanes)
@@ -70,28 +71,36 @@ def infoUpdate(inAir, trackingPlanes):
 def addPlaneToTrack(plane, chat_id):
     inAir = planesInAir.getInAir()
     trackingPlanes = readNwrite.readTrackingPlanes()
+
+    """trackingPlanes = {"624130": {"type": "R135", "callsign": "HUNTR53", "altitude": "28000", "Lat/Long": ["32.889267", "40.075653"],"status": "in air", "chat_id": [659584153]}}
+    msg = TGapi.outOfRange_msg('624130', trackingPlanes)
+    usersList = trackingPlanes['624130']['chat_id']
+    # TGapi.sendTo(msg, usersList)
+    TGapi.sendToOoR(msg, usersList, plane)"""
     if plane in trackingPlanes.keys():
+        print('=-=-=-=-', plane)
         if chat_id in trackingPlanes[plane]['chat_id']:
-            msg = TGapi.alreadyTracking_msg(plane, inAir)
+            print(trackingPlanes[plane]['chat_id'])
+            msg = TGapi.alreadyTracking_msg(plane, trackingPlanes)
             print(msg)
             TGapi.sendMsg(chat_id, msg)
             return False
         else:
             trackingPlanes[plane]['chat_id'].append(chat_id)
-            msg = TGapi.willTrack_msg(plane, inAir)
+            msg = TGapi.willTrack_msg(str(plane), inAir)
             readNwrite.writeTrackingPlanes(trackingPlanes)
             TGapi.sendMsg(chat_id, msg)
 
     elif plane in inAir.keys():
         trackingPlanes[plane] = inAir[plane]
         trackingPlanes[plane]['chat_id'].append(chat_id)
-        msg = TGapi.willTrack_msg(plane, inAir)
+        msg = TGapi.willTrack_msg(str(plane), inAir)
         print(msg)
         TGapi.sendMsg(chat_id, msg)
         readNwrite.writeTrackingPlanes(trackingPlanes)
         return True
     else:
-        msg = TGapi.notFound_msg(plane)
+        msg = TGapi.notFound_msg(str(plane))
         print(msg)
         TGapi.sendMsg(chat_id, msg)
         return False

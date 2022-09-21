@@ -52,6 +52,28 @@ def sendTo(msg, userList):
         sendMsg_response = requests.post(url + 'sendMessage', msgJson)
     return 'ok'
 
+def sendToOoR(msg, userList, plane):
+    msgJson = {
+        "text": msg,
+        "chat_id": '',
+        "parse_mode": "Markdown",
+        "reply_markup": {
+            "inline_keyboard": [[
+                {
+                    "text": "Удалить самолет",
+                    "callback_data": ""
+                }]
+            ]
+        }
+    }
+    for user in userList:
+        msgJson['chat_id'] = user
+        msgJson['reply_markup']['inline_keyboard'][0][0]['callback_data'] = plane
+        print(msgJson)
+        sendMsg_response = requests.post(url + 'sendMessage', msgJson)
+        print(sendMsg_response.content)
+    return 'ok'
+
 def allUsers(trackingPlanes):
     allUserslList = []
     for reg in trackingPlanes.keys():
@@ -78,6 +100,8 @@ def outOfRange_msg(plane, trackingPlanes):
     return msg
 
 def alreadyTracking_msg(plane, inAir):
+    print(type(plane))
+    print(inAir.keys())
     msg = f"🟡 Самолет уже в списке отслеживаемых.\n" \
           f"Тип: _{inAir[plane]['type']}_\n" \
           f"Бортовой: _{plane}_\n" \
