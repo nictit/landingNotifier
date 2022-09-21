@@ -101,7 +101,7 @@ def getStatus_msg(trackingPlanes, chat_id):
     theUserAcDict = theUserAc(trackingPlanes, chat_id)
     if theUserAcDict:
         for plane in theUserAcDict:
-            msg = msg + theUserAcDict[plane]['type'] + ' (' + theUserAcDict[plane]['callsign'] + ', ' + plane + ') - ' + theUserAcDict[plane]['status'] + '\n'
+            msg = msg + theUserAcDict[plane]['type'] + ' (' + theUserAcDict[plane]['callsign'] + ', ' + plane + ') - ' + theUserAcDict[plane]['status'] + ', alt - ' + theUserAcDict[plane]['altitude'] + 'ft' +'\n'
     else:
         msg = msg + 'самолетов нет'
     return msg

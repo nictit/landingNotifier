@@ -21,13 +21,15 @@ def checkPlanes():
     infoUpdate(inAir, trackingPlanes)
 
 def stndCheck(inAir, STND, trackingPlanes, allUsersList):
+    print(inAir.keys())
+    print(trackingPlanes.keys())
     for plane in inAir.keys():
         if (inAir[plane]['type'] in STND) and (plane in trackingPlanes.keys()) and (trackingPlanes[plane]['chat_id'] != allUsersList):
             msg = TGapi.stnd_msg(plane, inAir)
             usersList = list(set(allUsersList)-set(trackingPlanes[plane]['chat_id']))
             TGapi.sendTo(msg, usersList)
             trackingPlanes[plane]['chat_id'] += usersList
-        elif inAir[plane]['type'] in STND and plane not in trackingPlanes.keys() and int(inAir[plane]['altitude']) > 1000:
+        elif inAir[plane]['type'] in STND and plane not in trackingPlanes.keys() and inAir[plane]['altitude'].isdigit() and int(inAir[plane]['altitude']) > 1000:
             msg = TGapi.stnd_msg(plane, inAir)
             TGapi.sendTo(msg, allUsersList)
             trackingPlanes[plane] = inAir[plane]
