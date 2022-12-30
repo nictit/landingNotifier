@@ -1,4 +1,5 @@
 import requests
+import json
 
 #https://api.telegram.org/bot5048232576:AAHKQXWuVI-KIFQOEsDEizTGo9A1Ahjk4cw/getUpdates
 api_url = 'https://api.telegram.org/bot'
@@ -40,6 +41,37 @@ def sendMsg(chat_id, msg):
               }
     sendMsg_response = requests.post(url + 'sendMessage', msgJson)
     return sendMsg_response.json()['ok']
+
+def sendMsgForStatus(chat_id, msg, inline_keyboard):
+    print(inline_keyboard)
+    msgJson = {
+        "text": msg,
+        "chat_id": chat_id,
+        "parse_mode": "Markdown",
+               "reply_markup": {
+                   "inline_keyboard":
+                       [inline_keyboard]
+               }
+    }
+    print(msgJson)
+    sendMsg_response = requests.post(url + 'sendMessage', json=msgJson)
+    return sendMsg_response.json()['ok']
+
+def editMsgForStatus(chat_id, message_id, msg, inline_keyboard):
+    print(inline_keyboard)
+    msgJson = {
+        "text": msg,
+        "chat_id": chat_id,
+        "message_id": message_id,
+        "parse_mode": "Markdown",
+               "reply_markup": {
+                   "inline_keyboard":
+                       [inline_keyboard]
+               }
+    }
+    print(msgJson)
+    editMsg_response = requests.post(url + 'editMessageText', json=msgJson)
+    return editMsg_response.json()['ok']
 
 def sendTo(msg, userList):
     msgJson = {
@@ -99,13 +131,11 @@ def outOfRange_msg(plane, trackingPlanes):
           f"Высота: _{trackingPlanes[plane]['altitude']}._"
     return msg
 
-def alreadyTracking_msg(plane, inAir):
-    print(type(plane))
-    print(inAir.keys())
+def alreadyTracking_msg(plane, trackingPlanes):
     msg = f"🟡 Самолет уже в списке отслеживаемых.\n" \
-          f"Тип: _{inAir[plane]['type']}_\n" \
+          f"Тип: _{trackingPlanes[plane]['type']}_\n" \
           f"Бортовой: _{plane}_\n" \
-          f"Позывной: _{inAir[plane]['callsign']}_"
+          f"Позывной: _{trackingPlanes[plane]['callsign']}_"
     return msg
 
 def willTrack_msg(plane, inAir):
@@ -119,7 +149,7 @@ def notFound_msg(planeReg):
     msg = f'Самолет с бортовым {planeReg} не найден.'
     return msg
 
-def getStatus_msg(trackingPlanes, chat_id):
+def rightOne_getStatus_msg(trackingPlanes, chat_id):
     msg = '_Текущий статус:_\n\n'
     a = []
     theUserAcDict = theUserAc(trackingPlanes, chat_id)
@@ -139,3 +169,21 @@ def theUserAc(trackingPlanes: object, chat_id: object) -> object:
                 if ids==chat_id:
                     theUserAcDict[plane] = trackingPlanes[plane]
     return theUserAcDict
+
+
+def getStatus_msg(trackingPlanes, chat_id):
+    msg = '_Текущий статус:_\n(нажми на цифру для удаления из списка)\n\n'
+    a = []
+    inline_keyboard = []
+    theUserAcDict = theUserAc(trackingPlanes, chat_id)
+    if theUserAcDict:
+        for i, plane in enumerate(theUserAcDict):
+            msg = msg + str(i + 1) + '. ' + theUserAcDict[plane]['type'] + ' (' + theUserAcDict[plane][
+                'callsign'] + ', ' + plane + ') - ' + theUserAcDict[plane]['status'] + ', alt - ' + \
+                    theUserAcDict[plane]['altitude'] + 'ft' + '\n'
+            print(i, plane)
+            inline_keyboard.append({"text": str(i+1), "callback_data": plane})
+    else:
+        msg = msg + 'самолетов нет'
+    print(inline_keyboard)
+    return msg, inline_keyboard

@@ -49,6 +49,7 @@ def clearTrackingPlane(chat_id, plane):
     return msg
 
 def clearAll():
-    writeTrackingPlanes('{}')
+    trackingPlanes = {}
+    writeTrackingPlanes(trackingPlanes)
     msg = 'ALL were deleted'
-    return 'ok'
+    return msg

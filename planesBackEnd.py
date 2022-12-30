@@ -1,4 +1,4 @@
-#altitude cheker and add plane to tracking aircraft functions
+#altitude cheсker and add plane to tracking aircraft functions
 import readNwrite
 import planesInAir
 import TGapi

@@ -13,7 +13,15 @@ def index():
     print(flask.request.json)
     if 'callback_query' in flask.request.json.keys():
         chat_id = flask.request.json['callback_query']['message']['chat']['id']
-        readNwrite.clearTrackingPlane(chat_id, flask.request.json['callback_query']['data'])
+        message_id = flask.request.json['callback_query']['message']['message_id']
+        #readNwrite.clearTrackingPlane(chat_id, flask.request.json['callback_query']['data'])
+        print('ПРИШЕЛ СОЛБЕК')
+        print(flask.request.json['callback_query']['data'])
+        plane = flask.request.json['callback_query']['data']
+        readNwrite.clearTrackingPlane(chat_id, plane)
+        msg, inline_keyboard = TGapi.getStatus_msg(readNwrite.readTrackingPlanes(), chat_id)
+        TGapi.editMsgForStatus(chat_id, message_id, msg, inline_keyboard)
+
     elif 'message' in flask.request.json.keys():
         chat_id, user_name, msg_text = TGapi.WH_analyse(flask.request.json)
         if msg_text == '/start':
@@ -25,9 +33,9 @@ def index():
 
             TGapi.sendMsg(chat_id, msg)
         elif msg_text.lower()=='status':
-            msg = TGapi.getStatus_msg(readNwrite.readTrackingPlanes(), chat_id)
+            msg, inline_keyboard = TGapi.getStatus_msg(readNwrite.readTrackingPlanes(), chat_id)
             print(msg, user_name)
-            TGapi.sendMsg(chat_id, msg)
+            TGapi.sendMsgForStatus(chat_id, msg, inline_keyboard)
         elif msg_text.lower()=='stop':
             msg = readNwrite.clearTrackingPlanes(chat_id)
             TGapi.sendMsg(chat_id, msg)
@@ -44,8 +52,8 @@ def index():
 
 def main():
     TGapi.deleteWH()
-    print(TGapi.setWH('https://whereismyairbot.herokuapp.com'))
-    #print(TGapi.setWH('https://6e39-87-226-251-234.ngrok.io'))
+    #print(TGapi.setWH('https://whereismyairbot.herokuapp.com'))
+    print(TGapi.setWH('https://34b4-87-226-251-234.ngrok.io'))
     print('WH set')
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
 
