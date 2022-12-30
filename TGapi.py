@@ -88,19 +88,11 @@ def sendToOoR(msg, userList, plane):
     msgJson = {
         "text": msg,
         "chat_id": '',
-        "parse_mode": "Markdown",
-        "reply_markup": {
-            "inline_keyboard": [[
-                {
-                    "text": "Удалить самолет",
-                    "callback_data": ""
-                }]
-            ]
-        }
+        "parse_mode": "Markdown"
     }
     for user in userList:
         msgJson['chat_id'] = user
-        msgJson['reply_markup']['inline_keyboard'][0][0]['callback_data'] = plane
+        #msgJson['reply_markup']['inline_keyboard'][0][0]['callback_data'] = plane
         print(msgJson)
         sendMsg_response = requests.post(url + 'sendMessage', msgJson)
         print(sendMsg_response.content)
